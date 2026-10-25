@@ -1388,6 +1388,33 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--cv-fo
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+/* iOS Safari's native datetime editor has intrinsic sizing and text-fill behavior
+   that are separate from the input's outer CSS box. Keep both within the card. */
+#recordView .sleep-datetime-grid,
+#recordView .sleep-datetime-grid>.field{box-sizing:border-box;min-width:0;max-width:100%}
+#recordView .sleep-datetime-grid input[type="datetime-local"]{
+  display:block;box-sizing:border-box!important;width:100%!important;inline-size:100%!important;
+  min-width:0!important;min-inline-size:0!important;max-width:100%!important;max-inline-size:100%!important;
+  color:var(--cv-ink)!important;-webkit-text-fill-color:var(--cv-ink);opacity:1
+}
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-date-and-time-value{
+  display:inline-flex;width:100%;min-width:0;min-inline-size:0;justify-content:flex-start;
+  color:var(--cv-ink);-webkit-text-fill-color:var(--cv-ink);opacity:1
+}
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit,
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-text,
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-month-field,
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-day-field,
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-year-field,
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-hour-field,
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-minute-field,
+#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-ampm-field{
+  color:var(--cv-ink);-webkit-text-fill-color:var(--cv-ink);opacity:1
+}
+@media(max-width:520px){
+  #recordView .sleep-datetime-grid input[type="datetime-local"]{padding-left:8px!important;padding-right:8px!important;font-size:16px!important}
+}
 </style>
 </head>
 <body>
