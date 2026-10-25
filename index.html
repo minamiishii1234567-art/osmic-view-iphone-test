@@ -1254,8 +1254,9 @@ p,small,label,input,textarea,select,button,.settings-note,.guided-hint,.record-p
 .hero::before,.hero::after{color:#8b9aa2;opacity:.62}
 /* Sleep dates stay side by side on desktop and stack on narrow screens. */
 .sleep-datetime-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.sleep-datetime-grid>.field{min-width:0}
-.sleep-datetime-grid input[type="datetime-local"]{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.sleep-datetime-grid,.sleep-datetime-grid>.field{width:100%;min-width:0}
+.sleep-datetime-grid input[type="datetime-local"]{display:block;width:100%;min-width:0;max-width:100%;inline-size:100%;min-inline-size:0;max-inline-size:100%;box-sizing:border-box}
+.sleep-datetime-grid input[type="datetime-local"]::-webkit-date-and-time-value{width:100%;min-width:0;text-align:left}
 /* Shared card surfaces. */
 .card,.sa-card,.affirmation-card,.record-observatory,.record-daily-question,.guided-theme,.guided-session-row,.recent-item,.review-calendar-card,.review-insights-section,.review-emotion-section,.settings-place-card,.settings-facts-card,.settings-data-card,.cv-hero,.mindmap-card,.modal,.detail-sheet{
   color:var(--cv-ink);background:var(--cv-surface);border:1px solid var(--cv-rule);border-radius:var(--cv-radius);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none
@@ -1356,7 +1357,15 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--cv-fo
   .card,.sa-card,.affirmation-card{padding:22px;margin-bottom:18px}
 }
 @media(max-width:520px){
-  .sleep-datetime-grid{grid-template-columns:minmax(0,1fr)}
+  .sleep-datetime-grid{grid-template-columns:minmax(0,1fr);width:100%;min-width:0}
+  .sleep-datetime-grid>.field{width:100%;max-width:100%;min-width:0}
+  .sleep-datetime-grid input[type="datetime-local"]{width:100%;min-width:0;max-width:100%;font-size:16px;padding-inline:8px}
+  #recordView #sleepQualityGroup{display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;gap:7px}
+  #recordView #sleepQualityGroup .toggle-btn{width:100%;min-width:0;max-width:100%;text-align:left;padding-inline:12px}
+  #recordView #recentWrap .recent-item{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:7px;width:100%;min-width:0}
+  #recordView #recentWrap .recent-item .rd{min-width:0}
+  #recordView #recentWrap .recent-item .tags{display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;gap:6px}
+  #recordView #recentWrap .recent-item .tags>span{display:block;min-width:0;max-width:100%;overflow-wrap:anywhere;word-break:normal}
   .wrap{padding-left:16px;padding-right:16px;padding-bottom:calc(78px + env(safe-area-inset-bottom,0px));border-left:0;border-right:0}
   .hero{padding:23px 16px 14px}
   .card,.sa-card,.affirmation-card{padding:14px;margin-bottom:12px}
