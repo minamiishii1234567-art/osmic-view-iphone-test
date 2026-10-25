@@ -1254,9 +1254,9 @@ p,small,label,input,textarea,select,button,.settings-note,.guided-hint,.record-p
 .hero::before,.hero::after{color:#8b9aa2;opacity:.62}
 /* Sleep dates stay side by side on desktop and stack on narrow screens. */
 .sleep-datetime-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.sleep-datetime-grid,.sleep-datetime-grid>.field{width:100%;min-width:0}
-.sleep-datetime-grid input[type="datetime-local"]{display:block;width:100%;min-width:0;max-width:100%;inline-size:100%;min-inline-size:0;max-inline-size:100%;box-sizing:border-box}
-.sleep-datetime-grid input[type="datetime-local"]::-webkit-date-and-time-value{width:100%;min-width:0;text-align:left}
+.sleep-datetime-grid,.sleep-datetime-grid>.field{width:100%;min-width:0;box-sizing:border-box}
+.sleep-datetime-control{width:100%;min-width:0;box-sizing:border-box}
+.sleep-datetime-display{display:none}
 /* Shared card surfaces. */
 .card,.sa-card,.affirmation-card,.record-observatory,.record-daily-question,.guided-theme,.guided-session-row,.recent-item,.review-calendar-card,.review-insights-section,.review-emotion-section,.settings-place-card,.settings-facts-card,.settings-data-card,.cv-hero,.mindmap-card,.modal,.detail-sheet{
   color:var(--cv-ink);background:var(--cv-surface);border:1px solid var(--cv-rule);border-radius:var(--cv-radius);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none
@@ -1359,7 +1359,11 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--cv-fo
 @media(max-width:520px){
   .sleep-datetime-grid{grid-template-columns:minmax(0,1fr);width:100%;min-width:0}
   .sleep-datetime-grid>.field{width:100%;max-width:100%;min-width:0}
-  .sleep-datetime-grid input[type="datetime-local"]{width:100%;min-width:0;max-width:100%;font-size:16px;padding-inline:8px}
+  #recordView .sleep-datetime-control{position:relative;width:100%;height:48px;min-width:0;max-width:100%;box-sizing:border-box;border:1px solid var(--cv-rule-strong);border-radius:var(--cv-radius-small);background:#fff}
+  #recordView .sleep-datetime-control .sleep-datetime-display{display:flex;align-items:center;width:100%;height:100%;min-width:0;padding:8px 12px;box-sizing:border-box;color:var(--cv-muted);font-size:1rem;line-height:1.5;white-space:nowrap}
+  #recordView .sleep-datetime-control.has-value .sleep-datetime-display{color:var(--cv-ink)}
+  #recordView .sleep-datetime-control input[type="datetime-local"]{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;min-width:0;max-width:100%;padding:0!important;border:0!important;border-radius:inherit!important;box-sizing:border-box!important;background:transparent!important;color:transparent!important;-webkit-text-fill-color:transparent;opacity:0;cursor:pointer}
+  #recordView .sleep-datetime-control:focus-within{outline:2px solid var(--cv-focus);outline-offset:2px}
   #recordView #sleepQualityGroup{display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;gap:7px}
   #recordView #sleepQualityGroup .toggle-btn{width:100%;min-width:0;max-width:100%;text-align:left;padding-inline:12px}
   #recordView #recentWrap .recent-item{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:7px;width:100%;min-width:0}
@@ -1387,33 +1391,6 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--cv-fo
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-}
-/* iOS Safari's native datetime editor has intrinsic sizing and text-fill behavior
-   that are separate from the input's outer CSS box. Keep both within the card. */
-#recordView .sleep-datetime-grid,
-#recordView .sleep-datetime-grid>.field{box-sizing:border-box;min-width:0;max-width:100%}
-#recordView .sleep-datetime-grid input[type="datetime-local"]{
-  display:block;box-sizing:border-box!important;width:100%!important;inline-size:100%!important;
-  min-width:0!important;min-inline-size:0!important;max-width:100%!important;max-inline-size:100%!important;
-  color:var(--cv-ink)!important;-webkit-text-fill-color:var(--cv-ink);opacity:1
-}
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-date-and-time-value{
-  display:inline-flex;width:100%;min-width:0;min-inline-size:0;justify-content:flex-start;
-  color:var(--cv-ink);-webkit-text-fill-color:var(--cv-ink);opacity:1
-}
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit,
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-text,
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-month-field,
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-day-field,
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-year-field,
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-hour-field,
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-minute-field,
-#recordView .sleep-datetime-grid input[type="datetime-local"]::-webkit-datetime-edit-ampm-field{
-  color:var(--cv-ink);-webkit-text-fill-color:var(--cv-ink);opacity:1
-}
-@media(max-width:520px){
-  #recordView .sleep-datetime-grid input[type="datetime-local"]{padding-left:8px!important;padding-right:8px!important;font-size:16px!important}
 }
 </style>
 </head>
@@ -1468,8 +1445,8 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--cv-fo
   <div class="card">
     <h2><svg class="record-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 14.4A8.5 8.5 0 0 1 9.6 4.5a8.7 8.7 0 1 0 9.9 9.9Z"/><path d="M16.5 4v4m-2-2h4"/></svg>睡眠</h2>
     <div class="grid2 sleep-datetime-grid">
-      <div class="field"><label>寝た日時</label><input type="datetime-local" id="f_sleep_start"></div>
-      <div class="field"><label>起きた日時</label><input type="datetime-local" id="f_sleep_end"></div>
+      <div class="field sleep-datetime-field"><label for="f_sleep_start">寝た日時</label><div class="sleep-datetime-control"><span class="sleep-datetime-display" id="sleepStartDisplay" aria-hidden="true">日時を選択</span><input type="datetime-local" id="f_sleep_start" aria-label="寝た日時"></div></div>
+      <div class="field sleep-datetime-field"><label for="f_sleep_end">起きた日時</label><div class="sleep-datetime-control"><span class="sleep-datetime-display" id="sleepEndDisplay" aria-hidden="true">日時を選択</span><input type="datetime-local" id="f_sleep_end" aria-label="起きた日時"></div></div>
     </div>
     <div class="duration" id="durationDisplay">睡眠時間: —</div>
     <div class="field" style="margin-top:14px;">
@@ -2361,11 +2338,23 @@ document.querySelectorAll('#sleepQualityGroup .toggle-btn').forEach(btn=>btn.add
 
 function updateDurationDisplay(){
   const s=document.getElementById('f_sleep_start').value, e=document.getElementById('f_sleep_end').value;
+  updateSleepDateTimeDisplays();
   const min=computeDurationMinutes(s?new Date(s).toISOString():null, e?new Date(e).toISOString():null);
   document.getElementById('durationDisplay').textContent='睡眠時間: '+(min==null?(s&&e?'起きた日時は寝た日時より後にしてください':'—'):formatDuration(min));
 }
 document.getElementById('f_sleep_start').addEventListener('input',updateDurationDisplay);
 document.getElementById('f_sleep_end').addEventListener('input',updateDurationDisplay);
+document.getElementById('f_sleep_start').addEventListener('change',updateDurationDisplay);
+document.getElementById('f_sleep_end').addEventListener('change',updateDurationDisplay);
+function updateSleepDateTimeDisplays(){
+  [['f_sleep_start','sleepStartDisplay'],['f_sleep_end','sleepEndDisplay']].forEach(([inputId,displayId])=>{
+    const input=document.getElementById(inputId),display=document.getElementById(displayId),control=input?.parentElement;
+    if(!input||!display||!control)return;
+    const match=input.value.match(/^(\d{4,})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+    display.textContent=match?`${match[1]}年${match[2]}月${match[3]}日 ${match[4]}:${match[5]}`:'日時を選択';
+    control.classList.toggle('has-value',!!match);
+  });
+}
 document.getElementById('f_dream').addEventListener('change', e=>document.getElementById('dreamMemoWrap').classList.toggle('show', e.target.checked));
 // 「ゾロ目」= 全ての桁が同じ数字であること(1桁は自明にゾロ目扱い)
 function isZorome(v){ return v.length>0 && /^([0-9])\1*$/.test(v); }
@@ -2403,6 +2392,7 @@ document.getElementById('f_numbers').addEventListener('input', e=>{
 function resetForm(){
   document.getElementById('f_sleep_start').value=''; document.getElementById('f_sleep_end').value='';
   document.getElementById('durationDisplay').textContent='睡眠時間: —';
+  updateSleepDateTimeDisplays();
   document.querySelectorAll('.toggle-btn.active').forEach(b=>b.classList.remove('active'));
   selectedMood=null; selectedSleepQuality=null;
   document.getElementById('f_numbers').value=''; document.getElementById('numberInterp').innerHTML=''; lastValidNumberInput='';
